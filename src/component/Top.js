@@ -10,7 +10,6 @@ function Top() {
     setVisible(true);
   };
   const onCloseMenu = () => {
-    console.log(1);
     setVisible(false);
   };
   return (
