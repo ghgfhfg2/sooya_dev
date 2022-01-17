@@ -1,12 +1,12 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 import { db } from "src/firebase";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, addDoc } from "firebase/firestore";
 
 function regist() {
-  const onFinish = async (values) => {
+  const onFinish = (values) => {
     try {
-      const docRef = await addDoc(collection(db, "users"), {
+      setDoc(doc(db, "portfolio", values.title), {
         ...values,
       });
     } catch (e) {
@@ -20,23 +20,32 @@ function regist() {
     <>
       <Form
         name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 20 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: "Please input your username!" }]}
+          label="title"
+          name="title"
+          rules={[{ required: true, message: "title은 필수입니다." }]}
         >
           <Input />
         </Form.Item>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
+        <Form.Item
+          label="url"
+          name="url"
+          rules={[{ required: true, message: "url은 필수입니다." }]}
+        >
+          <Input />
+        </Form.Item>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button type="primary" htmlType="submit" style={{ width: "50%" }}>
+            Submit
+          </Button>
+        </div>
       </Form>
     </>
   );
