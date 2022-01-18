@@ -4,12 +4,38 @@ import * as antIcon from "react-icons/ai";
 import style from "styles/nav.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { auth } from "src/firebase";
-import { signOut } from "firebase/auth";
-import { clearUser } from "@redux/actions/user_action";
+import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { auth, provider } from "src/firebase";
+import { setUser, clearUser } from "@redux/actions/user_action";
 
 function TotalMenu({ visible, onCloseMenu }) {
   const userInfo = useSelector((state) => state.user.currentUser);
+
+  //로그인
+  const googleHandler = async () => {
+    provider.setCustomParameters({ prompt: "select_account" });
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        // The signed-in user info.
+        const user = result.user;
+        console.log(user);
+        dispatch(setUser(user));
+        // redux action? --> dispatch({ type: SET_USER, user });
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
 
   //로그아웃
   const googleSignOut = () => {
@@ -21,6 +47,11 @@ function TotalMenu({ visible, onCloseMenu }) {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  //메뉴닫기
+  const onLinkCheck = (e) => {
+    if (e.target.tagName === "A") onCloseMenu();
   };
   return (
     <>
@@ -38,9 +69,7 @@ function TotalMenu({ visible, onCloseMenu }) {
           </>
         ) : (
           <>
-            <Link href="/login">
-              <a>login</a>
-            </Link>
+            <Button onClick={googleHandler}>login</Button>
           </>
         )}
         <button
@@ -50,12 +79,14 @@ function TotalMenu({ visible, onCloseMenu }) {
         >
           <antIcon.AiOutlineClose />
         </button>
-        <ul className={style.nav}>
-          <li>
-            <Link href="/regist">
-              <a>등록</a>
-            </Link>
-          </li>
+        <ul className={style.nav} onClick={onLinkCheck}>
+          {userInfo && userInfo.email === "sooya1207@gmail.com" && (
+            <li>
+              <Link href="/regist">
+                <a>등록</a>
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
       <div

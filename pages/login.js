@@ -11,7 +11,6 @@ import { setUser, clearUser } from "@redux/actions/user_action";
 
 export default function Login() {
   let dispatch = useDispatch();
-  console.log(dispatch);
   const googleHandler = async () => {
     provider.setCustomParameters({ prompt: "select_account" });
     signInWithPopup(auth, provider)
