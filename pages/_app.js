@@ -1,5 +1,6 @@
 import Top from "@component/Top";
 import "styles/globals.css";
+import "styles/App.css";
 import "antd/dist/antd.css";
 import wrapper from "@redux/store/configureStore";
 import { useDispatch } from "react-redux";

@@ -1,0 +1,9 @@
+.com-tab-box .tab-content {
+  display: none; }
+
+.loading {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row; }

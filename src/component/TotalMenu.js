@@ -51,7 +51,6 @@ function TotalMenu({ visible, onCloseMenu }) {
 
   //메뉴닫기
   const onLinkCheck = (e) => {
-    console.log(e);
     if (e.target.tagName === "A") onCloseMenu();
   };
   return (
