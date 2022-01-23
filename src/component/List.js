@@ -70,7 +70,7 @@ function List() {
             </li>
           ))}
       </ul>
-      {loading && <Spin className="loading" />}
+      {(loading || listData.length == 0) && <Spin className="loading" />}
       {nextBtn && <Button onClick={() => plusData(page)}>next</Button>}
     </>
   );
